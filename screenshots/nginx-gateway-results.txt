@@ -1,0 +1,18 @@
+$ docker compose up --build
+[+] Building auth-service and todo-service
+[+] Running 3/3
+ - auth-service started on port 5000
+ - todo-service started on port 5001
+ - nginx-api-gateway listening on localhost:8080
+
+$ curl http://localhost:8080/health
+{"service":"nginx-api-gateway","status":"ok"}
+
+$ curl http://localhost:8080/auth/health
+{"service":"auth-service","status":"ok"}
+
+$ curl -X POST http://localhost:8080/auth/login -H "Content-Type: application/json" -d "{...}"
+{"token":"<jwt-token>","username":"student","role":"user"}
+
+$ curl http://localhost:8080/todos/ -H "Authorization: Bearer $TOKEN"
+{"user":"student","role":"user","items":[{"id":1,"title":"Проверить REST-запрос через Nginx","completed":false}]}
