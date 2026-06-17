@@ -1,0 +1,19 @@
+$ curl http://localhost:5000/health
+HTTP 200
+{"service": "auth-service", "status": "ok"}
+
+$ curl http://localhost:5001/todos
+HTTP 401
+{"error": "Valid bearer token is required"}
+
+$ curl -X POST http://localhost:5000/login -H "Content-Type: application/json" -d "{...}"
+HTTP 200
+{"token": "<jwt-token>", "username": "student", "role": "user"}
+
+$ curl http://localhost:5001/todos -H "Authorization: Bearer $TOKEN"
+HTTP 200
+{"user": "student", "role": "user", "items": [{"id": 1, "title": "Проверить REST-запрос через Nginx", "completed": false}, {"id": 2, "title": "Передать JWT в Authorization header", "completed": false}]}
+
+$ curl -X POST http://localhost:5001/todos -H "Authorization: Bearer $TOKEN" -d "{...}"
+HTTP 201
+{"id": 3, "title": "Сделать скриншоты для отчета", "completed": false}
